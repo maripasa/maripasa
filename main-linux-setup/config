@@ -39,8 +39,13 @@ bindsym $mod+Ctrl+Shift+Down exec --no-startup-id pactl set-sink-volume @DEFAULT
 bindsym $mod+Ctrl+Shift+m exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym $mod+Ctrl+Shift+n exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
+# Change display brightness
 bindsym $mod+Ctrl+$mod1+Up exec --no-startup-id brightnessctl set +10%
 bindsym $mod+Ctrl+$mod1+Down exec --no-startup-id brightnessctl set -10%
+
+# Change keyboard language layout
+bindsym $mod+Ctrl+$mod1+b exec --no-startup-id setxkbmap br
+bindsym $mod+Ctrl+$mod1+u exec --no-startup-id setxkbmap us
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
