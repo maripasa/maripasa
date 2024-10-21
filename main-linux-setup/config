@@ -1,4 +1,3 @@
-
 set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
@@ -12,7 +11,7 @@ font pango:monospace 8
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
 exec --no-startup-id dex --autostart --environment i3
-exec --no-startup-id feh --randomize --bg-fill ~/Imagens/Wallpaper
+exec --no-startup-id feh --bg-fill "$(find ~/Imagens/Wallpaper ~/Images/Wallpaper -type f | shuf -n 1)"
 exec --no-startup-id setxkbmap -option "caps:swapescape"
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so
 # they are included here as an example. Modify as you see fit.
@@ -33,19 +32,15 @@ bindsym $mod+Ctrl+Shift+m exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK
 bindsym $mod+Ctrl+Shift+n exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
 # Change display brightness
-bindsym $mod+Ctrl+$mod1+Up exec --no-startup-id brightnessctl set +10%
-bindsym $mod+Ctrl+$mod1+Down exec --no-startup-id brightnessctl set -10%
+bindsym $mod+Ctrl+Shift+Right exec --no-startup-id brightnessctl set +10%
+bindsym $mod+Ctrl+Shift+Left exec --no-startup-id brightnessctl set -10%
 
 # Change keyboard language layout
-bindsym $mod+Ctrl+$mod1+b exec --no-startup-id setxkbmap br
-bindsym $mod+Ctrl+$mod1+u exec --no-startup-id setxkbmap us
+bindsym $mod+Ctrl+Shift+b exec --no-startup-id setxkbmap br
+bindsym $mod+Ctrl+Shift+u exec --no-startup-id setxkbmap us
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
-
-# move tiling windows via drag & drop by left-clicking into the title bar,
-# or left-clicking anywhere into the window while holding the floating modifier.
-tiling_drag modifier titlebar
 
 # start a terminal
 bindsym $mod+Return exec kitty
