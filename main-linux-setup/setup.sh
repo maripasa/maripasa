@@ -1,19 +1,73 @@
-
-# i3 kitty pulseaudio flameshot feh git python3 brightnessctl gnome-pomodoro 
-
-# x spotify x firealpaca x libreoffice x cargo x ohmybash ungoogled_chromium bitwarden lvim
-
-# i3 config, lvim config (hack), i3status config
-# mkdir: repositories, projects, downloads, videos, documents, images, audio 
-
-# Light list of programs
-
-ARCH_PROGRAMS=("flameshot" "python3" "gnome-pomodoro" "spotify-launcher" "libreoffice")
-DEBIAN_PROGRAMS=("flameshot" "python3" "gnome-pomodoro" "libreoffice")
+ARCH_PROGRAMS=("flameshot" "python3" "gnome-pomodoro" "spotify-launcher" "libreoffice" "npm" "nodejs")
+DEBIAN_PROGRAMS=("flameshot" "python3" "gnome-pomodoro" "libreoffice" "npm" "nodejs")
 
 DEBIAN_LIGHT_PROGRAMS=("i3" "kitty" "feh" "pulseaudio" "git" "brighnessctl")
-ARCH_LIGHT_PROGRAMS=("i3" "kitty" "feh" "pulseaudio" "git" "brighnessctl")
+ARCH_LIGHT_PROGRAMS=("i3" "kitty" "feh" "pulseaudio" "git" "brighnessctl" "nvim")
 
+copy_fonts(){
+    unzip hack.zip
+    sudo cp hack /usr/local/share/fonts/
+}
+
+copy_config(){
+    cp config.lua ~/.config/lvim/
+    cp config ~/.config/i3/
+    cp i3status.conf /etc/
+}
+
+install_lvim_linux(){
+    LV_BRANCH='release-1.4/neovim-0.9' bash <(curl -s https://raw.githubusercontent.com/LunarVim/LunarVim/release-1.4/neovim-0.9/utils/installer/install.sh)
+}
+
+install_nvim_debian() {
+    sudo apt remove neovim
+    sudo apt install ninja-build gettext cmake unzip curl
+    git clone https://github.com/neovim/neovim
+    cd neovim
+    make CMAKE_BUILD_TYPE=RelWithDebInfo
+    cd build
+    cpack -G DEB
+    sudo dpkg -i --force-overwrite  nvim-linux64.deb
+}
+
+install_ungoogled_chrome_debian(){
+    # Install initial packages
+    sudo apt install -y devscripts equivs
+
+    # Clone repository and switch to it (optional if are already in it)
+    git clone https://github.com/ungoogled-software/ungoogled-chromium-debian.git
+    cd ungoogled-chromium-debian
+
+    # Initiate the submodules (optional if they are already initiated)
+    git submodule update --init --recursive
+
+    # Prepare the local source
+    debian/rules setup
+
+    # Install missing packages
+    sudo mk-build-deps -i debian/control
+    rm ungoogled-chromium-build-deps_*
+
+    # Build the package
+    dpkg-buildpackage -b -uc
+}
+
+install_ungoogled_chrome_arch(){
+    # Install required dependencies. Make sure your user has access to sudo
+    sudo pacman -S base-devel
+
+    # Clone this repository
+    git clone https://github.com/ungoogled-software/ungoogled-chromium-archlinux
+
+    # Navigate into the repository
+    cd ungoogled-chromium-archlinux
+
+    # Check out the latest tag
+    git checkout $(git describe --abbrev=0 --tags)
+
+    # Start the build, this will download all necessary dependencies automatically
+    makepkg -s
+}
 install_spotify_debian() {
     echo "Downloading Spotify..."
     curl -sS https://download.spotify.com/debian/pubkey_6224F9941A8AA6D1.gpg | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/spotify.gpg
@@ -28,6 +82,19 @@ install_firealpaca_linux() {
     echo "Installing FireAlpaca..."
     sudo mv firealpaca.appimage /usr/local/bin/firealpaca
     sudo chmod +x /usr/local/bin/firealpaca
+}
+
+install_bitwarden_linux() {
+    # Change to the directory where you want to download the AppImage
+    cd ~/Downloads
+    # Download the Bitwarden AppImage
+    wget https://vault.bitwarden.com/download/?app=desktop&platform=linux -O Bitwarden.AppImage
+    # Rename the AppImage to just 'bitwarden'
+    mv Bitwarden.AppImage bitwarden
+    # Move the renamed AppImage to /usr/local/bin
+    sudo mv bitwarden /usr/local/bin/
+    # Make it executable
+    sudo chmod +x /usr/local/bin/bitwarden
 }
 
 install_cargo_linux() {
@@ -56,7 +123,15 @@ install_debian() {
         install_firealpaca_linux
         install_cargo_linux
         install_ohmybash_linux
+        install_ungoogled_chrome_debian
+        install_nvim_debian
+        install_lvim_linux
+        install_bitwarden_linux
+
     fi
+    mkdir ~/Projects ~/Repositories
+    copy_fonts
+    copy_config
 }
 
 # Function to install Arch programs
@@ -72,7 +147,13 @@ install_arch() {
         install_firealpaca_linux
         install_cargo_linux
         install_ohmybash_linux
+        install_ungoogled_chrome_arch
+        install_lvim_linux
+        install_bitwarden_linux
     fi
+    mkdir ~/repositories ~/projects ~/downloads ~/videos ~/documents ~/images ~/audio 
+    copy_fonts
+    copy_config
 }
 
 # Function to show help
