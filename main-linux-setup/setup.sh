@@ -1,8 +1,8 @@
-ARCH_PROGRAMS=("flameshot" "python3" "gnome-pomodoro" "spotify-launcher" "libreoffice" "npm" "nodejs")
-DEBIAN_PROGRAMS=("flameshot" "python3" "gnome-pomodoro" "libreoffice" "npm" "nodejs")
+ARCH_PROGRAMS=("flameshot" "python3" "spotify-launcher" "libreoffice" "npm" "nodejs")
+DEBIAN_PROGRAMS=("flameshot" "python3" "libreoffice" "npm" "nodejs")
 
-DEBIAN_LIGHT_PROGRAMS=("i3" "kitty" "feh" "pulseaudio" "git" "brighnessctl")
-ARCH_LIGHT_PROGRAMS=("i3" "kitty" "feh" "pulseaudio" "git" "brighnessctl" "nvim")
+DEBIAN_LIGHT_PROGRAMS=("i3" "kitty" "feh" "pulseaudio" "git" "brightnessctl")
+ARCH_LIGHT_PROGRAMS=("i3" "kitty" "feh" "pulseaudio" "git" "brightnessctl" "nvim")
 
 copy_fonts(){
     unzip hack.zip
@@ -13,6 +13,14 @@ copy_config(){
     cp config.lua ~/.config/lvim/
     cp config ~/.config/i3/
     cp i3status.conf /etc/
+    if [ -d ~/Imagens/Wallpaper ]; then
+        cp wallpaper.png ~/Imagens/Wallpaper/
+    elif [ -d ~/Images/Wallpaper ]; then
+        cp wallpaper.png ~/Images/Wallpaper/
+    else
+        echo "Nenhum dos diretórios de destino existe."
+    fi
+
 }
 
 install_lvim_linux(){
@@ -20,8 +28,8 @@ install_lvim_linux(){
 }
 
 install_nvim_debian() {
-    sudo apt remove neovim
-    sudo apt install ninja-build gettext cmake unzip curl
+    sudo apt remove neovim -y
+    sudo apt install ninja-build gettext cmake unzip curl -y
     git clone https://github.com/neovim/neovim
     cd neovim
     make CMAKE_BUILD_TYPE=RelWithDebInfo
@@ -72,7 +80,7 @@ install_spotify_debian() {
     echo "Downloading Spotify..."
     curl -sS https://download.spotify.com/debian/pubkey_6224F9941A8AA6D1.gpg | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/spotify.gpg
     echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
-    sudo apt-get update && sudo apt-get install spotify-client
+    sudo apt-get update && sudo apt-get install spotify-client -y
 }
 
 install_firealpaca_linux() {
@@ -122,11 +130,11 @@ install_debian() {
 
         install_firealpaca_linux
         install_cargo_linux
-        install_ohmybash_linux
         install_ungoogled_chrome_debian
         install_nvim_debian
         install_lvim_linux
         install_bitwarden_linux
+        install_ohmybash_linux
 
     fi
     mkdir ~/Projects ~/Repositories
@@ -146,12 +154,12 @@ install_arch() {
 
         install_firealpaca_linux
         install_cargo_linux
-        install_ohmybash_linux
         install_ungoogled_chrome_arch
         install_lvim_linux
         install_bitwarden_linux
+        install_ohmybash_linux
     fi
-    mkdir ~/repositories ~/projects ~/downloads ~/videos ~/documents ~/images ~/audio 
+    mkdir ~/Repositories ~/Projetos ~/Downloads ~/Videos ~/Documentos ~/Imagens/Wallpaper ~/Audio 
     copy_fonts
     copy_config
 }
