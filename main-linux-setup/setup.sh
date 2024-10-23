@@ -5,14 +5,15 @@ DEBIAN_LIGHT_PROGRAMS=("i3" "kitty" "feh" "pulseaudio" "git" "brightnessctl")
 ARCH_LIGHT_PROGRAMS=("i3" "kitty" "feh" "pulseaudio" "git" "brightnessctl" "nvim")
 
 copy_fonts(){
-    unzip hack.zip
-    sudo cp hack /usr/local/share/fonts/
+    unzip Hack.zip -d Hack
+    sudo mv Hack /usr/local/share/fonts/
 }
 
 copy_config(){
     chmod +x key.sh
     sudo cp key.sh /usr/local/bin/
     cp config.lua ~/.config/lvim/
+    mkdir ~/.config/i3/
     cp config ~/.config/i3/
     sudo cp i3status.conf /etc/
     if [ -d ~/Imagens/Wallpaper ]; then
@@ -20,7 +21,14 @@ copy_config(){
     elif [ -d ~/Images/Wallpaper ]; then
         cp wallpaper.png ~/Images/Wallpaper/
     else
-        echo "Nenhum dos diretórios de destino existe."
+        if [ -d ~/Imagens ]; then
+            mkdir ~/Imagens/Wallpaper
+            cp wallpaper.png ~/Imagens/Wallpaper
+        fi
+        if [ -d ~/Images ]; then
+            mkdir ~/Images/Wallpaper
+            cp wallpaper.png ~/Images/Wallpaper
+        fi
     fi
 
 }
@@ -38,6 +46,8 @@ install_nvim_debian() {
     cd build
     cpack -G DEB
     sudo dpkg -i --force-overwrite  nvim-linux64.deb
+    cd ../../
+    rm -rf neovim
 }
 
 install_ungoogled_chrome_debian(){
@@ -77,6 +87,8 @@ install_ungoogled_chrome_arch(){
 
     # Start the build, this will download all necessary dependencies automatically
     makepkg -s
+
+    cd ../
 }
 install_spotify_debian() {
     echo "Downloading Spotify..."
@@ -95,16 +107,11 @@ install_firealpaca_linux() {
 }
 
 install_bitwarden_linux() {
-    # Change to the directory where you want to download the AppImage
-    cd ~/Downloads
     # Download the Bitwarden AppImage
-    wget https://vault.bitwarden.com/download/?app=desktop&platform=linux -O Bitwarden.AppImage
-    # Rename the AppImage to just 'bitwarden'
-    mv Bitwarden.AppImage bitwarden
-    # Move the renamed AppImage to /usr/local/bin
+    wget -O bitwarden.appimage https://vault.bitwarden.com/download/?app=desktop&platform=linux
+    mv bitwarden.appimage bitwarden
+    sudo chmod +x bitwarden
     sudo mv bitwarden /usr/local/bin/
-    # Make it executable
-    sudo chmod +x /usr/local/bin/bitwarden
 }
 
 install_cargo_linux() {
@@ -141,7 +148,7 @@ install_debian() {
         install_spotify_debian 
         install_nvim_debian
         install_lvim_linux
-        install_bitwarden_linux
+        #install_bitwarden_linux
 
     fi
     mkdir ~/Projects ~/Repositories
