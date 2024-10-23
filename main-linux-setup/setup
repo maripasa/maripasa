@@ -1,8 +1,27 @@
 ARCH_PROGRAMS=("flameshot" "python3" "spotify-launcher" "libreoffice" "npm" "nodejs")
 DEBIAN_PROGRAMS=("flameshot" "python3" "libreoffice" "npm" "nodejs")
 
-DEBIAN_LIGHT_PROGRAMS=("i3" "kitty" "feh" "pulseaudio" "git" "brightnessctl")
-ARCH_LIGHT_PROGRAMS=("i3" "kitty" "feh" "pulseaudio" "git" "brightnessctl" "nvim")
+DEBIAN_LIGHT_PROGRAMS=("i3" "kitty" "feh" "pulseaudio" "git" "brightnessctl" "xclip")
+ARCH_LIGHT_PROGRAMS=("i3" "kitty" "feh" "pulseaudio" "git" "brightnessctl" "nvim" "xclip")
+
+show_help() {
+    echo "Usage: $0 [OPTIONS] [OS_TYPE]"
+    echo "Options:"
+    echo "  --help              Show this help message"
+    echo "  --light             Install only light versions of programs"
+    echo "  --firealpaca        Install firealpaca"
+    echo "  --ungoogled-chrome  Install Ungoogled-chrome"
+    echo
+    echo "OS Types:"
+    echo "  debian              Install programs for Debian-based systems"
+    echo "  arch                Install programs for Arch-based systems"
+    echo
+    echo "Examples:"
+    echo "  $0                 Install all programs on detected OS"
+    echo "  $0 arch            Install Arch programs"
+    echo "  $0 --light debian   Install light Debian programs"
+    exit 1
+}
 
 copy_fonts(){
     unzip Hack.zip -d Hack
@@ -10,8 +29,8 @@ copy_fonts(){
 }
 
 copy_config(){
-    chmod +x key.sh
-    sudo cp key.sh /usr/local/bin/
+    sudo chmod 700 key
+    sudo cp key /usr/local/bin/
     cp config.lua ~/.config/lvim/
     mkdir ~/.config/i3/
     cp config ~/.config/i3/
@@ -99,7 +118,7 @@ install_spotify_debian() {
 
 install_firealpaca_linux() {
     echo "Downloading FireAlpaca AppImage..."
-    wget -O firealpaca.appimage https://firealpaca.com/download/linux
+    curl -L -o firealpaca.appimage https://firealpaca.com/download/linux
 
     echo "Installing FireAlpaca..."
     sudo mv firealpaca.appimage /usr/local/bin/firealpaca
@@ -107,11 +126,12 @@ install_firealpaca_linux() {
 }
 
 install_bitwarden_linux() {
-    # Download the Bitwarden AppImage
-    wget -O bitwarden.appimage https://vault.bitwarden.com/download/?app=desktop&platform=linux
-    mv bitwarden.appimage bitwarden
-    sudo chmod +x bitwarden
-    sudo mv bitwarden /usr/local/bin/
+    echo "Downloading Bitwarden AppImage..."
+    curl -L -o bitwarden.appimage https://vault.bitwarden.com/download/?app=desktop&platform=linux
+
+    echo "Installing Bitwarden..."
+    sudo mv bitwarden.appimage /usr/local/bin/bitwarden
+    sudo chmod +x /usr/local/bin/bitwarden
 }
 
 install_cargo_linux() {
@@ -148,7 +168,7 @@ install_debian() {
         install_spotify_debian 
         install_nvim_debian
         install_lvim_linux
-        #install_bitwarden_linux
+        install_bitwarden_linux
 
     fi
     mkdir ~/Projects ~/Repositories
@@ -186,26 +206,6 @@ install_arch() {
     install_ohmybash_linux
 }
 
-# Function to show help
-usage() {
-    echo "Usage: $0 [OPTIONS] [OS_TYPE]"
-    echo "Options:"
-    echo "  --help              Show this help message"
-    echo "  --light             Install only light versions of programs"
-    echo
-    echo "OS Types:"
-    echo "  debian              Install programs for Debian-based systems"
-    echo "  arch                Install programs for Arch-based systems"
-    echo
-    echo "Examples:"
-    echo "  $0                 Install all programs on detected OS"
-    echo "  $0 arch            Install Arch programs"
-    echo "  $0 --light debian   Install light Debian programs"
-    echo "  $0 --firealpaca     Install firealpaca"
-    echo "  $0 --ungoogled-chrome   Install Ungoogled-chrome"
-    exit 1
-}
-
 # Function to detect OS
 detect_os() {
     if [ -f /etc/debian_version ]; then
@@ -220,12 +220,12 @@ detect_os() {
 # Error function for invalid options
 error_exit() {
     echo "Error: $1"
-    usage
+    show_help
 }
 
 # Check if --help was passed
 if [[ "$1" == "--help" ]]; then
-    usage
+    show_help
 fi
 
 # Parse options
