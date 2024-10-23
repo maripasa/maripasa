@@ -10,9 +10,11 @@ copy_fonts(){
 }
 
 copy_config(){
+    chmod +x key.sh
+    sudo cp key.sh /usr/local/bin/
     cp config.lua ~/.config/lvim/
     cp config ~/.config/i3/
-    cp i3status.conf /etc/
+    sudo cp i3status.conf /etc/
     if [ -d ~/Imagens/Wallpaper ]; then
         cp wallpaper.png ~/Imagens/Wallpaper/
     elif [ -d ~/Images/Wallpaper ]; then
@@ -117,6 +119,9 @@ install_ohmybash_linux() {
 # Function to install Debian programs
 install_debian() {
     local light=$1
+    local firealpaca=$2
+    local ungoogled=$3
+
     if [ "$light" = "true" ]; then
         echo "Installing light Debian programs..."
         sudo apt install -y ${DEBIAN_LIGHT_PROGRAMS[@]}
@@ -126,25 +131,31 @@ install_debian() {
         sudo apt install -y ${DEBIAN_LIGHT_PROGRAMS[@]}
         sudo apt install -y ${DEBIAN_PROGRAMS[@]}
         
-        install_spotify_debian 
-
-        install_firealpaca_linux
         install_cargo_linux
-        install_ungoogled_chrome_debian
+        if [ "$firealpaca" = "true" ]; then
+            install_firealpaca_linux
+        fi
+        if [ "$ungoogled" = "true" ]; then
+            install_ungoogled_chrome_debian
+        fi
+        install_spotify_debian 
         install_nvim_debian
         install_lvim_linux
         install_bitwarden_linux
-        install_ohmybash_linux
 
     fi
     mkdir ~/Projects ~/Repositories
     copy_fonts
     copy_config
+    install_ohmybash_linux
 }
 
 # Function to install Arch programs
 install_arch() {
     local light=$1
+    local firealpaca=$2
+    local ungoogled=$3
+
     if [ "$light" = "true" ]; then
         echo "Installing light Arch programs..."
         sudo pacman -S --noconfirm ${ARCH_LIGHT_PROGRAMS[@]}
@@ -152,16 +163,20 @@ install_arch() {
         echo "Installing full Arch programs..."
         sudo pacman -S --noconfirm ${ARCH_PROGRAMS[@]}
 
-        install_firealpaca_linux
+        if [ "$firealpaca" = "true" ]; then
+            install_firealpaca_linux
+        fi
+        if [ "$ungoogled" = "true" ]; then
+            install_ungoogled_chrome_arch
+        fi
         install_cargo_linux
-        install_ungoogled_chrome_arch
         install_lvim_linux
         install_bitwarden_linux
-        install_ohmybash_linux
     fi
     mkdir ~/Repositories ~/Projetos ~/Downloads ~/Videos ~/Documentos ~/Imagens/Wallpaper ~/Audio 
     copy_fonts
     copy_config
+    install_ohmybash_linux
 }
 
 # Function to show help
@@ -179,6 +194,8 @@ usage() {
     echo "  $0                 Install all programs on detected OS"
     echo "  $0 arch            Install Arch programs"
     echo "  $0 --light debian   Install light Debian programs"
+    echo "  $0 --firealpaca     Install firealpaca"
+    echo "  $0 --ungoogled-chrome   Install Ungoogled-chrome"
     exit 1
 }
 
@@ -206,6 +223,9 @@ fi
 
 # Parse options
 light_install=false
+ungoogled_chrome=false
+firealpaca=false
+
 os_choice=""
 while [[ "$#" -gt 0 ]]; do
     case $1 in
@@ -215,6 +235,14 @@ while [[ "$#" -gt 0 ]]; do
             ;;
         debian|arch)
             os_choice=$1
+            shift
+            ;;
+        --ungoogled-chrome)
+            ungoogled_chrome=true
+            shift
+            ;;
+        --firealpaca)
+            firealpaca=true
             shift
             ;;
         *)
@@ -237,10 +265,10 @@ fi
 # Execute appropriate installation function
 case "$os_choice" in
     debian)
-        install_debian $light_install
+        install_debian $light_install $firealpaca $ungoogled_chrome
         ;;
     arch)
-        install_arch $light_install
+        install_arch $light_install $firealpaca $ungoogled_chrome
         ;;
     *)
         error_exit "Invalid OS type '$os_choice'."
