@@ -25,6 +25,7 @@ show_help() {
 }
 
 copy_fonts(){
+    rm /usr/local/share/fonts/Hack/
     sudo mv -f Hack /usr/local/share/fonts/
 }
 
