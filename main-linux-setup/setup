@@ -32,7 +32,7 @@ copy_config(){
     sudo chmod 700 key
     sudo cp key /usr/local/bin/
     cp config.lua ~/.config/lvim/
-    mkdir ~/.config/i3/
+    mkdir -p ~/.config/i3/
     cp config ~/.config/i3/
     sudo cp i3status.conf /etc/
     if [ -d ~/Imagens/Wallpaper ]; then
@@ -41,11 +41,11 @@ copy_config(){
         cp wallpaper.png ~/Images/Wallpaper/
     else
         if [ -d ~/Imagens ]; then
-            mkdir ~/Imagens/Wallpaper
+            mkdir -p ~/Imagens/Wallpaper 
             cp wallpaper.png ~/Imagens/Wallpaper
         fi
         if [ -d ~/Images ]; then
-            mkdir ~/Images/Wallpaper
+            mkdir -p ~/Images/Wallpaper 
             cp wallpaper.png ~/Images/Wallpaper
         fi
     fi
@@ -171,7 +171,7 @@ install_debian() {
         install_bitwarden_linux
 
     fi
-    mkdir ~/Projects ~/Repositories
+    mkdir -p ~/Projects ~/Repositories
     copy_fonts
     copy_config
     install_ohmybash_linux
@@ -200,7 +200,7 @@ install_arch() {
         install_lvim_linux
         install_bitwarden_linux
     fi
-    mkdir ~/Repositories ~/Projetos ~/Downloads ~/Videos ~/Documentos ~/Imagens/Wallpaper ~/Audio 
+    mkdir -p ~/Repositories ~/Projetos ~/Downloads ~/Videos ~/Documentos ~/Imagens/Wallpaper ~/Audio 
     copy_fonts
     copy_config
     install_ohmybash_linux
@@ -236,6 +236,11 @@ firealpaca=false
 os_choice=""
 while [[ "$#" -gt 0 ]]; do
     case $1 in
+        --config)
+            copy_fonts
+            copy_config
+            exit 0
+            ;;
         --light)
             light_install=true
             shift
