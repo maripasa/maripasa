@@ -25,7 +25,6 @@ show_help() {
 }
 
 copy_fonts(){
-    unzip Hack.zip -d Hack
     sudo mv -f Hack /usr/local/share/fonts/
 }
 
