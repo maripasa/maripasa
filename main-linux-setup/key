@@ -3,8 +3,8 @@
 show_help() {
     echo "Usage: $0 [OPTIONS]"
     echo "Options:"
-    echo "  -h | -help                Show this help message"
-    echo "  -k | -key <new-key>       Saves a new key in the script"
+    echo "  -h | --help                Show this help message"
+    echo "  -k | --key <new-key>       Saves a new key in the script"
     exit 1
 }
 
