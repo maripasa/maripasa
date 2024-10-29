@@ -33,7 +33,7 @@ bindsym $mod+Ctrl+Shift+n exec --no-startup-id pactl set-source-mute @DEFAULT_SO
 
 # Change display brightness
 bindsym $mod+Ctrl+Shift+Right exec --no-startup-id brightnessctl set +10%
-bindsym $mod+Ctrl+Shift+Left exec --no-startup-id brightnessctl set -10%
+bindsym $mod+Ctrl+Shift+Left exec --no-startup-id brightnessctl set 10%-
 
 # Change keyboard language layout
 bindsym $mod+Ctrl+Shift+b exec --no-startup-id setxkbmap br
