@@ -11,6 +11,7 @@ show_help() {
     echo "  --light             Install only light versions of programs"
     echo "  --firealpaca        Install firealpaca"
     echo "  --ungoogled-chrome  Install Ungoogled-chrome"
+    echo "  --config            Install only config"
     echo
     echo "OS Types:"
     echo "  debian              Install programs for Debian-based systems"
@@ -232,14 +233,14 @@ fi
 light_install=false
 ungoogled_chrome=false
 firealpaca=false
-
+install_stuff=true
 os_choice=""
 while [[ "$#" -gt 0 ]]; do
     case $1 in
         --config)
             copy_fonts
             copy_config
-            exit 0
+            install_stuff=false
             ;;
         --light)
             light_install=true
@@ -263,26 +264,28 @@ while [[ "$#" -gt 0 ]]; do
     esac
 done
 
-# If no OS specified, auto-detect
-if [ -z "$os_choice" ]; then
-    os_choice=$(detect_os)
-fi
+if [[ "$install_stuff == "true""]]; then
+    # If no OS specified, auto-detect
+    if [ -z "$os_choice" ]; then
+        os_choice=$(detect_os)
+    fi
 
-# Check if OS is supported
-if [[ "$os_choice" == "unsupported" ]]; then
-    echo "Error: Unsupported OS detected: $(uname -s)"
-    exit 1
-fi
+    # Check if OS is supported
+    if [[ "$os_choice" == "unsupported" ]]; then
+        echo "Error: Unsupported OS detected: $(uname -s)"
+        exit 1
+    fi
 
-# Execute appropriate installation function
-case "$os_choice" in
-    debian)
-        install_debian $light_install $firealpaca $ungoogled_chrome
-        ;;
-    arch)
-        install_arch $light_install $firealpaca $ungoogled_chrome
-        ;;
-    *)
-        error_exit "Invalid OS type '$os_choice'."
-        ;;
-esac
+    # Execute appropriate installation function
+    case "$os_choice" in
+        debian)
+            install_debian $light_install $firealpaca $ungoogled_chrome
+            ;;
+        arch)
+            install_arch $light_install $firealpaca $ungoogled_chrome
+            ;;
+        *)
+            error_exit "Invalid OS type '$os_choice'."
+            ;;
+    esac
+fi
