@@ -30,14 +30,16 @@ bindsym $mod+Ctrl+Shift+Up exec --no-startup-id pactl set-sink-volume @DEFAULT_S
 bindsym $mod+Ctrl+Shift+Down exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
 bindsym $mod+Ctrl+Shift+m exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym $mod+Ctrl+Shift+n exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
-
 # Change display brightness
 bindsym $mod+Ctrl+Shift+Right exec --no-startup-id brightnessctl set +10%
 bindsym $mod+Ctrl+Shift+Left exec --no-startup-id brightnessctl set 10%-
-
 # Change keyboard language layout
 bindsym $mod+Ctrl+Shift+b exec --no-startup-id setxkbmap br
 bindsym $mod+Ctrl+Shift+u exec --no-startup-id setxkbmap us
+
+# printscrn
+bindsym $mod+Ctrl+Shift+s exec flameshot gui
+bindsym Print exec flameshot gui
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -142,8 +144,6 @@ bindsym $mod+Shift+9 move container to workspace number $ws9
 bindsym $mod+Shift+0 move container to workspace number $ws10
 # lock screen
 bindsym $mod+Ctrl+Shift+l exec i3lock
-# printscrn
-bindsym Print exec flameshot gui
 # reload the configuration file
 bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
