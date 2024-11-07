@@ -1,5 +1,9 @@
-ARCH_PROGRAMS=("flameshot" "python3" "spotify-launcher" "libreoffice" "npm" "nodejs")
-DEBIAN_PROGRAMS=("flameshot" "python3" "libreoffice" "npm" "nodejs")
+#!/bin/bash
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+ARCH_PROGRAMS=("flameshot" "python3" "spotify-launcher" "libreoffice" "npm" "nodejs" "i3" "kitty" "feh" "pulseaudio" "git" "brightnessctl" "nvim" "xclip")
+DEBIAN_PROGRAMS=("flameshot" "python3" "libreoffice" "npm" "nodejs" "i3" "kitty" "feh" "pulseaudio" "git" "brightnessctl" "xclip")
 
 DEBIAN_LIGHT_PROGRAMS=("i3" "kitty" "feh" "pulseaudio" "git" "brightnessctl" "xclip")
 ARCH_LIGHT_PROGRAMS=("i3" "kitty" "feh" "pulseaudio" "git" "brightnessctl" "nvim" "xclip")
@@ -26,31 +30,30 @@ show_help() {
 
 copy_fonts(){
     rm /usr/local/share/fonts/Hack/
-    sudo mv -f Hack /usr/local/share/fonts/
+    sudo mv -f "${SCRIPT_DIR}/Hack" /usr/local/share/fonts/
 }
 
 copy_config(){
-    sudo chmod 700 key
-    sudo cp key /usr/local/bin/
-    cp config.lua ~/.config/lvim/
+    sudo chmod 700 "${SCRIPT_DIR}/key"
+    sudo cp "${SCRIPT_DIR}/key" /usr/local/bin/
+    cp "${SCRIPT_DIR}/config.lua" ~/.config/lvim/
     mkdir -p ~/.config/i3/
-    cp config ~/.config/i3/
-    sudo cp i3status.conf /etc/
+    cp "${SCRIPT_DIR}/config" ~/.config/i3/
+    sudo cp "${SCRIPT_DIR}/i3status.conf" /etc/
     if [ -d ~/Imagens/Wallpaper ]; then
-        cp wallpaper.png ~/Imagens/Wallpaper/
+        cp "${SCRIPT_DIR}/wallpaper.png" ~/Imagens/Wallpaper/
     elif [ -d ~/Images/Wallpaper ]; then
-        cp wallpaper.png ~/Images/Wallpaper/
+        cp "${SCRIPT_DIR}/wallpaper.png" ~/Images/Wallpaper/
     else
         if [ -d ~/Imagens ]; then
             mkdir -p ~/Imagens/Wallpaper 
-            cp wallpaper.png ~/Imagens/Wallpaper
+            cp "${SCRIPT_DIR}/wallpaper.png" ~/Imagens/Wallpaper
         fi
         if [ -d ~/Images ]; then
             mkdir -p ~/Images/Wallpaper 
-            cp wallpaper.png ~/Images/Wallpaper
+            cp "${SCRIPT_DIR}/wallpaper.png" ~/Images/Wallpaper
         fi
     fi
-
 }
 
 install_lvim_linux(){
@@ -65,8 +68,8 @@ install_nvim_debian() {
     make CMAKE_BUILD_TYPE=RelWithDebInfo
     cd build
     cpack -G DEB
-    sudo dpkg -i --force-overwrite  nvim-linux64.deb
-    cd ../../
+    sudo dpkg -i --force-overwrite nvim-linux64.deb
+    cd "${SCRIPT_DIR}"
     rm -rf neovim
 }
 
@@ -90,6 +93,7 @@ install_ungoogled_chrome_debian(){
 
     # Build the package
     dpkg-buildpackage -b -uc
+    cd "${SCRIPT_DIR}"
 }
 
 install_ungoogled_chrome_arch(){
@@ -98,8 +102,6 @@ install_ungoogled_chrome_arch(){
 
     # Clone this repository
     git clone https://github.com/ungoogled-software/ungoogled-chromium-archlinux
-
-    # Navigate into the repository
     cd ungoogled-chromium-archlinux
 
     # Check out the latest tag
@@ -107,31 +109,31 @@ install_ungoogled_chrome_arch(){
 
     # Start the build, this will download all necessary dependencies automatically
     makepkg -s
-
-    cd ../
+    cd "${SCRIPT_DIR}"
 }
+
 install_spotify_debian() {
     echo "Downloading Spotify..."
-    curl -sS https://download.spotify.com/debian/pubkey_6224F9941A8AA6D1.gpg | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/spotify.gpg
+    curl -sS https://download.spotify.com/debian/pubkey_6224F9941A8AA6D1.gpg | sudo gpg --dearmor --yes -o /et/apt/trusted.gpg.d/spotify.gpg
     echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
     sudo apt-get update && sudo apt-get install spotify-client -y
 }
 
 install_firealpaca_linux() {
     echo "Downloading FireAlpaca AppImage..."
-    curl -L -o firealpaca.appimage https://firealpaca.com/download/linux
+    curl -L -o "${SCRIPT_DIR}/firealpaca.appimage" https://firealpaca.com/download/linux
 
     echo "Installing FireAlpaca..."
-    sudo mv firealpaca.appimage /usr/local/bin/firealpaca
+    sudo mv "${SCRIPT_DIR}/firealpaca.appimage" /usr/local/bin/firealpaca
     sudo chmod +x /usr/local/bin/firealpaca
 }
 
 install_bitwarden_linux() {
     echo "Downloading Bitwarden AppImage..."
-    curl -L -o bitwarden.appimage https://vault.bitwarden.com/download/?app=desktop&platform=linux
+    curl -L -o "${SCRIPT_DIR}/bitwarden.appimage" https://vault.bitwarden.com/download/?app=desktop&platform=linux
 
     echo "Installing Bitwarden..."
-    sudo mv bitwarden.appimage /usr/local/bin/bitwarden
+    sudo mv "${SCRIPT_DIR}/bitwarden.appimage" /usr/local/bin/bitwarden
     sudo chmod +x /usr/local/bin/bitwarden
 }
 
@@ -153,10 +155,8 @@ install_debian() {
     if [ "$light" = "true" ]; then
         echo "Installing light Debian programs..."
         sudo apt install -y ${DEBIAN_LIGHT_PROGRAMS[@]}
-
     else
         echo "Installing full Debian programs..."
-        sudo apt install -y ${DEBIAN_LIGHT_PROGRAMS[@]}
         sudo apt install -y ${DEBIAN_PROGRAMS[@]}
         
         install_cargo_linux
@@ -170,7 +170,6 @@ install_debian() {
         install_nvim_debian
         install_lvim_linux
         install_bitwarden_linux
-
     fi
     mkdir -p ~/Projects ~/Repositories
     copy_fonts
@@ -264,7 +263,7 @@ while [[ "$#" -gt 0 ]]; do
     esac
 done
 
-if [[ "$install_stuff == "true""]]; then
+if [[ "$install_stuff" == true ]]; then
     # If no OS specified, auto-detect
     if [ -z "$os_choice" ]; then
         os_choice=$(detect_os)
