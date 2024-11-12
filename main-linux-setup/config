@@ -34,8 +34,8 @@ bindsym $mod+Ctrl+Shift+n exec --no-startup-id pactl set-source-mute @DEFAULT_SO
 bindsym $mod+Ctrl+Shift+Right exec --no-startup-id brightnessctl set +10%
 bindsym $mod+Ctrl+Shift+Left exec --no-startup-id brightnessctl set 10%-
 # Change keyboard language layout
-bindsym $mod+Ctrl+Shift+b exec --no-startup-id setxkbmap br; setxkbmap -option "caps:swapescape"
-bindsym $mod+Ctrl+Shift+u exec --no-startup-id setxkbmap us; setxkbmap -option "caps:swapescape"
+bindsym $mod+Ctrl+Shift+b exec --no-startup-id setxkbmap -layout "br" -option "caps:swapescape"
+bindsym $mod+Ctrl+Shift+u exec --no-startup-id setxkbmap -layout "us" -option "caps:swapescape"
 
 # printscrn
 bindsym $mod+Ctrl+Shift+s exec flameshot gui
