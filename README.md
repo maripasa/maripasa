@@ -1,2 +1,2 @@
-```zsh
-➜  PWNED BY DABZR (JOGUE LETRIS)
+```shell
+Nothing can happen till you swing the bat
