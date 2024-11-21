@@ -6,3 +6,19 @@
 vim.api.nvim_set_keymap('n', '<S-H>', ':bprevious<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<S-L>', ':bnext<CR>', { noremap = true, silent = true })
 vim.opt.relativenumber = true
+lvim.builtin.gitsigns.active = true
+lvim.builtin.gitsigns.opts = {
+  signs = {
+    add = { text = '+' },
+    change = { text = '~' },
+    delete = { text = '-' },
+  },
+  numhl = false,
+  linehl = false,
+  watch_gitdir = {
+    interval = 1000,
+    follow_files = true,
+  },
+  attach_to_untracked = true,
+  current_line_blame = true,
+}
