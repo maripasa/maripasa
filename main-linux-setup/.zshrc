@@ -39,3 +39,4 @@ bindkey '^[OB' history-search-forward
 
 CASE_SENSITIVE="false"
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+
