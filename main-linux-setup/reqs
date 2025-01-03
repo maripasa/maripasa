@@ -1,0 +1,10 @@
+rust, rustup, cargo, binstall, sccache
+i3
+pulseaudio
+xfce4-terminal
+zsh
+starship
+exa, bat, ripgrep, irust, bacon, cargo-info, porsmo, wiki-tui
+bitwarden
+bob-nvim
+flameshot, feh

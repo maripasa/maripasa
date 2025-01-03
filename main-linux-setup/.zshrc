@@ -1,23 +1,24 @@
-function git_branch_name()
-{
-  branch=$(git symbolic-ref HEAD 2> /dev/null | awk 'BEGIN{FS="/"} {print $NF}')
-  if [[ $branch == "" ]];
-  then
-    :
-  else
-    echo '('$branch') > '
-  fi
-}
-
 # Custom PATH setup
-export PATH=$HOME/.local/bin:$HOME/.nvm/versions/node/v20.17.0/bin:$HOME/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games/:/usr/local/go/bin
-export PATH=$PATH:/opt/arm-gnu-toolchain-14.2.rel1-x86_64-arm-none-eabi/bin
-
-# Pico SDK and toolchain paths
-export PICO_SDK_PATH=~/pico/pico-sdk/
-export PICO_TOOLCHAIN_PATH=/opt/arm-gnu-toolchain-14.2.rel1-x86_64-arm-none-eabi
+export PATH=$HOME/.local/bin:$HOME/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games/:/usr/local/go/bin
+export PATH=$PATH:$HOME/.local/share/bob/nvim-bin
 
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source $HOME/Projects/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+
+export PICO_SDK_PATH=/home/maripasa/Projects/pico-setup/pico/pico-sdk
+export PICO_EXAMPLES_PATH=/home/maripasa/Projects/pico-setup/pico/pico-examples
+export PICO_EXTRAS_PATH=/home/maripasa/Projects/pico-setup/pico/pico-extras
+export PICO_PLAYGROUND_PATH=/home/maripasa/Projects/pico-setup/pico/pico-playground
+
+export NVM_LAZY_LOAD=true
+export NVM_COMPLETION=true
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+bindkey              '^I'         menu-complete
+bindkey "$terminfo[kcbt]" reverse-menu-complete
 
 # History settings
 HISTFILE=~/.zsh_history
@@ -27,10 +28,7 @@ setopt append_history
 setopt hist_ignore_dups
 setopt share_history
 
-PROMPT="( $(git_branch_name)%F{blue}%1~%f @ %F{cyan}%m%f, %F{green}<%n>%f ) ; "
-
 autoload -U history-search-end
-autoload -U compinit
 
 zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end history-search-end
@@ -40,3 +38,13 @@ bindkey '^[OB' history-search-forward
 CASE_SENSITIVE="false"
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 
+export RUSTC_WRAPPER=sccache
+
+eval "$(starship init zsh)"
+
+alias ls="exa"
+alias du="dust"
+alias cat="bat"
+alias grep="rg"
+alias pomo="porsmo"
+alias wiki="wiki-tui"
