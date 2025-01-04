@@ -33,6 +33,7 @@ autoload -U history-search-end
 zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end history-search-end
 bindkey '^[OA' history-search-backward
+
 bindkey '^[OB' history-search-forward
 
 CASE_SENSITIVE="false"
@@ -46,5 +47,5 @@ alias ls="exa"
 alias du="dust"
 alias cat="bat"
 alias grep="rg"
-alias pomo="porsmo"
+alias pomo="porsmo pomodoro custom 50m 5m 15m"
 alias wiki="wiki-tui"
