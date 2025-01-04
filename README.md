@@ -1,2 +1,2 @@
 ```shell
-Nothing can happen till you swing the bat
+An anecdotal proof is merely evidence of an anecdote
