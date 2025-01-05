@@ -20,6 +20,7 @@ Plug 'hrsh7th/cmp-buffer'                " Buffer completions
 Plug 'hrsh7th/cmp-path'                  " Path completions
 Plug 'L3MON4D3/LuaSnip'                  " Snippets plugin
 
+Plug 'windwp/nvim-autopairs'             " Pairs
 Plug 'rust-lang/rust.vim'                " Rust syntax and utilities
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' } " Go tools
 
@@ -31,9 +32,10 @@ call plug#end()
 set nocompatible               " Grow past generational trauma
 set number                     " Show line numbers
 set relativenumber             " Show relative line numbers
-set tabstop=4                  " Set tab width to 4 spaces
-set shiftwidth=4               " Indentation is 4 spaces
-set expandtab                  " Use spaces instead of tabs
+set tabstop=8                  " Set tab width
+set shiftwidth=8               " Indentation
+set softtabstop=8              " Spaces per tab in editing
+set noexpandtab                  " Use spaces instead of tabs
 set autoindent                 " Automatically indent
 set smartindent                " Smarter indentation for code
 set clipboard=unnamedplus      " Use system clipboard
@@ -68,7 +70,7 @@ require("mason").setup()  -- Initialize Mason
 require("mason-lspconfig").setup({
     ensure_installed = {
         "pyright",
-        "gopls",
+ diploma-contra-burro       "gopls",
         "rust_analyzer",
         "clangd",
     },
