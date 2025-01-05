@@ -1,2 +1,2 @@
-```shell
-An anecdotal proof is merely evidence of an anecdote
+```go
+err := errors.New("Nothing can happen until you swing the bat.")
