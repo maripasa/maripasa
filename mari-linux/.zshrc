@@ -1,7 +1,9 @@
 # Extensions
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source $HOME/Projects/zsh-autocomplete/zsh-autocomplete.plugin.zsh
-eval "$(starship init zsh)"
+source $HOME/Projects/evalcache/evalcache.plugin.zsh
+
+_evalcache starship init zsh
 
 # Path
 export PATH=$HOME/.local/bin:$HOME/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games/:/usr/local/go/bin
