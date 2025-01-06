@@ -39,15 +39,16 @@ autoload -U history-search-end
 zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end history-search-end
 
-# Completion settings
-CASE_SENSITIVE="false"
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
-
 # Key Bindings
 bindkey '^I' menu-complete
 bindkey "$terminfo[kcbt]" reverse-menu-complete
 bindkey '^[OA' history-search-backward
 bindkey '^[OB' history-search-forward
+
+# start with cd
+chpwd() {
+	echo "$PWD" > ~/.last_dir
+} 
 
 # Aliases
 alias ls="exa"
@@ -56,3 +57,10 @@ alias cat="bat"
 alias grep="rg"
 alias pomo="porsmo pomodoro custom 50m 5m 15m"
 alias wiki="wiki-tui"
+connect() {
+  if [ $# -ne 2 ]; then
+    echo "Usage: connect <ssid> <password>"
+    return 1
+  fi
+  nmcli device wifi connect "$1" password "$2"
+}

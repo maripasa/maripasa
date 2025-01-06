@@ -28,5 +28,5 @@ MiscSearchDialogOpacity=100
 MiscShowUnsafePasteDialog=FALSE
 MiscRightClickAction=TERMINAL_RIGHT_CLICK_ACTION_CONTEXT_MENU
 FontUseSystem=TRUE
-ColorBackground=#24ce23f163d6
+ColorBackground=#24241f1f3131
 

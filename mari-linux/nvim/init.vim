@@ -70,7 +70,7 @@ require("mason").setup()  -- Initialize Mason
 require("mason-lspconfig").setup({
     ensure_installed = {
         "pyright",
- diploma-contra-burro       "gopls",
+        "gopls",
         "rust_analyzer",
         "clangd",
     },
