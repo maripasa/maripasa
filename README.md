@@ -1,8 +1,9 @@
 ```go
 func start() error {
-	learning := []string{
+	studying := []string{
 		"Go",
 		"Rust",
+		"Embedded systems",
 		"C",
 		"Python",
 		"Godot for Game Development",
