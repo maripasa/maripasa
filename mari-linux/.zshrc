@@ -1,10 +1,11 @@
+#
 # Extensions
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source $HOME/Projects/zsh-autocomplete/zsh-autocomplete.plugin.zsh
 source $HOME/Projects/evalcache/evalcache.plugin.zsh
 
 _evalcache starship init zsh
-
+_evalcache zoxide init zsh
 # Path
 export PATH=$HOME/.local/bin:$HOME/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games/:/usr/local/go/bin
 export PATH=$PATH:$HOME/.local/share/bob/nvim-bin
@@ -24,6 +25,9 @@ export NVM_DIR="$HOME/.nvm"
 
 ## Go
 export PATH=$PATH:/usr/local/go/bin
+
+## Zig
+export PATH=$PATH:$HOME/Projects/zig-linux-x86_64-0.14.0-dev.2615+a7a5f3506
 
 # Environment Variables
 export NVM_LAZY_LOAD=true
@@ -53,16 +57,24 @@ chpwd() {
 } 
 
 # Aliases
+alias cd="z"
 alias ls="exa"
 alias du="dust"
 alias cat="bat"
 alias grep="rg"
 alias pomo="porsmo pomodoro custom 50m 5m 15m"
 alias wiki="wiki-tui"
-connect() {
-  if [ $# -ne 2 ]; then
-    echo "Usage: connect <ssid> <password>"
-    return 1
-  fi
-  nmcli device wifi connect "$1" password "$2"
+alias connect="nmcli device wifi connect"
+
+copy() {
+	cat "$1" | xclip -selection clipboard
 }
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	yazi "$@" --cwd-file="$tmp"
+	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+		builtin cd -- "$cwd"
+	fi
+	rm -f -- "$tmp"
+}
+
