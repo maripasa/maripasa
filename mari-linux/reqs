@@ -5,7 +5,7 @@ i3
 pulseaudio
 xfce4-terminal
 zsh
-starship
+starship zoxide
 exa, bat, ripgrep, irust, bacon, cargo-info, porsmo, wiki-tui
 bitwarden
 bob-nvim
