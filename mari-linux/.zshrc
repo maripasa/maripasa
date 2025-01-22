@@ -27,8 +27,11 @@ export NVM_DIR="$HOME/.nvm"
 export PATH=$PATH:/usr/local/go/bin
 
 ## Zig
-export PATH=$PATH:$HOME/Projects/zig-linux-x86_64-0.14.0-dev.2615+a7a5f3506
-
+# export PATH=$PATH:$HOME/Projects/zig
+# ZVM
+export ZVM_INSTALL="$HOME/.zvm/self"
+export PATH="$PATH:$HOME/.zvm/bin"
+export PATH="$PATH:$ZVM_INSTALL/"
 # Environment Variables
 export NVM_LAZY_LOAD=true
 export NVM_COMPLETION=true
@@ -65,6 +68,47 @@ alias grep="rg"
 alias pomo="porsmo pomodoro custom 50m 5m 15m"
 alias wiki="wiki-tui"
 alias connect="nmcli device wifi connect"
+alias clip="xclip -selection clipboard"
+
+vim-help() {
+	echo """
+w - forward to next beginning of word
+W - like w, but skips over all but whitespace
+b - backward to previous beginning of word
+B - like b, but skips over all but whitespace
+e - forward to next end of word
+E - like e, but skips over all but whitespace
+ge - backwards to previous end of word
+gE - like ge, but skips over all but whitespace
+^ - move to first non-whitespace character on current line
+$ - move to end of current line
+0 - move to first column of current line
+
+tn - forward to just before next n
+Tn - backward to just after previous n
+fn - forward onto next n
+Fn - backwards onto previous n 
+
+i - enter insert mode before current character
+I - enter insert mode before first character on current line
+a - enter insert mode after current character
+A - enter insert mode after last character on current line
+rn - replace current character with n
+Rn - enter replace mode and just type over everything
+
+c deletes some stuff too
+
+ / - search forward for entered string
+? - search backward for entered string
+n - repeat previous search in the same direction
+N - repeat previous search in the opposite direction
+
+move to next word matching word under cursor
+# - move to previous word matching word under cursor
+% - move to matching brace (must be on a brace of some kind)
+
+"""
+}
 
 copy() {
 	cat "$1" | xclip -selection clipboard
