@@ -32,8 +32,8 @@ bindsym $mod+Ctrl+Shift+Down exec --no-startup-id pactl set-sink-volume @DEFAULT
 bindsym $mod+Ctrl+Shift+m exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym $mod+Ctrl+Shift+n exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 # Change display brightness
-bindsym $mod+Ctrl+Shift+Right exec --no-startup-id brightnessctl set +10%
-bindsym $mod+Ctrl+Shift+Left exec --no-startup-id brightnessctl set 10%-
+bindsym $mod+Ctrl+Shift+Right exec --no-startup-id brightnessctl set +100%
+bindsym $mod+Ctrl+Shift+Left exec --no-startup-id brightnessctl set 100%-
 # Change keyboard language layout
 bindsym $mod+Ctrl+Shift+b exec --no-startup-id setxkbmap -layout "br" -option "caps:swapescape"
 bindsym $mod+Ctrl+Shift+u exec --no-startup-id setxkbmap -layout "us" -option "caps:swapescape"

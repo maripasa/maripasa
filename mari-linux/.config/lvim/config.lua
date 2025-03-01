@@ -7,6 +7,7 @@ vim.api.nvim_set_keymap('n', '<S-H>', ':bprevious<CR>', { noremap = true, silent
 vim.api.nvim_set_keymap('n', '<S-L>', ':bnext<CR>', { noremap = true, silent = true })
 vim.opt.relativenumber = true
 lvim.builtin.gitsigns.active = true
+lvim.builtin.nvimtree.setup.view.side = "right"
 lvim.builtin.gitsigns.opts = {
   signs = {
     add = { text = '+' },
