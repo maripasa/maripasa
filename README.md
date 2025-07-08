@@ -1,12 +1,8 @@
 ```go
 func start() error {
 	studying := []string{
-		"Go",
-		"Rust",
-		"Embedded systems",
-		"C",
-		"Python",
-		"Godot for Game Development",
+		"haskell",
+		"go",
 	}
 	return errors.New("nothing can happen until you swing the bat")
 }
